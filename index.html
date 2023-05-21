@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>HTML 5 Boilerplate</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        let login
+        let getAdminData
+        const handleLoad = () => {
+            const endPoint = "http://localhost:3000/";
+            const loginStatus = document.getElementById('loginStatus');
+            const responseDiv = document.getElementById('responseDiv');
+
+            login = async (username) => {
+                await fetch(endPoint + 'login', {
+                    method: 'POST',
+                    credentials: "include",
+                    headers: {
+                        "content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ username })
+                })
+                .then(res => res.text())
+                .then(data => loginStatus.innerText = data)
+            }
+
+            getAdminData = async (username) => {
+                await fetch(endPoint + 'data', {
+                    credentials: "include",
+                    headers: {
+                        "content-Type": "application/json"
+                    }
+                })
+                .then(res => res.text())
+                .then(data => responseDiv.innerText = data)
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="handleLoad()">
+    <button id="login admin" onclick="login('admin')">Login Admin</button>
+    <button id="login user" onclick="login('account')">Login Normal User</button>
+    <div id="loginStatus"></div>
+    <br />
+    <br />
+    <br />
+    <div><button id="get data" onclick="getAdminData('account')">Get Data</button></div>
+    <div id="responseDiv"></div>
+</body>
+
+</html>
